@@ -10,6 +10,6 @@
 <h3>{deckTitle}</h3>
 <main class="grid grid-cols-12">
     {#each cards as card}
-        <CardImage {card} lastUpdated={"EENT"} />
+        <CardImage {card} />
     {/each}
 </main>
