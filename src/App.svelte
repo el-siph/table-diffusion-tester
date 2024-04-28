@@ -7,6 +7,7 @@
         type ServerResponse,
     } from "./interfaces";
     import Viewer from "./Sf-JSON.svelte";
+    import VisualDeck from "./VisualDeck.svelte";
 
     let socket: WebSocket;
 
@@ -29,6 +30,7 @@
     let playerNameValue = "";
     let lastReceivedResponse: string;
     let autoUpdateTableState = true;
+    let isVerboseMode = false;
 
     let messages: string[] = [];
     $: playerList = Object.keys(state._players).map((playerId) => ({
@@ -307,14 +309,31 @@
         <input type="checkbox" bind:checked={autoUpdateTableState} /> Auto-Update
     </label>
 
+    <div class="flex flex-row justify-start gap-2">
+        <input
+            name="is-verbose-check"
+            type="checkbox"
+            bind:checked={isVerboseMode}
+        />
+        <label for="is-verbose-check">Verbose Mode</label>
+    </div>
+
     <p class:bold={state.connectedToServer}>
         {state.connectedToServer ? `Connected to Server` : "Not Connected"}
     </p>
 
+    {#if !isVerboseMode}
+        <div class="visual-decks flex flex-col w-full">
+            <VisualDeck deckTitle={"Table Deck"} cards={state.tableDeck} />
+            <VisualDeck deckTitle={"Active Pile"} cards={state.activePile} />
+            <VisualDeck deckTitle={"Player Deck"} cards={state.playerDeck} />
+        </div>
+    {/if}
     <div class="detail-blocks">
         <TableDetails
             {state}
             {playerList}
+            {isVerboseMode}
             on:popDeckToPlayer={(e) =>
                 handlePopTableDeckToPlayer(e.detail.popCount)}
             on:popDeckToPile={(e) =>
@@ -322,21 +341,24 @@
         />
         <PlayerDetails
             {state}
+            {isVerboseMode}
             on:popToPile={(e) => handlePopPlayerToPile(e.detail.popCount)}
         />
     </div>
 
-    <div class="response-area">
-        <h3>Latest Response</h3>
-        <code>{lastReceivedResponse}</code>
-    </div>
+    {#if isVerboseMode}
+        <div class="response-area">
+            <h3>Latest Response</h3>
+            <code>{lastReceivedResponse}</code>
+        </div>
 
-    <h3>Messages</h3>
-    <div>
-        {#each messages.reverse() as message}
-            <p>{message}</p>
-        {/each}
-    </div>
+        <h3>Messages</h3>
+        <div>
+            {#each messages.reverse() as message}
+                <p>{message}</p>
+            {/each}
+        </div>
+    {/if}
 </main>
 
 <style lang="scss">

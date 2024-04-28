@@ -1,6 +1,6 @@
 export interface PlayingCard {
-  pips: number;
-  suit: string;
+  _pips: number;
+  _suit: string;
 }
 
 export interface ClientState {

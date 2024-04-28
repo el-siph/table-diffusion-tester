@@ -2,6 +2,7 @@
     import { createEventDispatcher } from "svelte";
     import type { ClientState } from "./src/interfaces";
     export let state: ClientState;
+    export let isVerboseMode: boolean;
 
     let popCount = 1;
 

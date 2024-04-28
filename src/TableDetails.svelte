@@ -3,6 +3,7 @@
     import type { ClientState } from "./interfaces";
     export let state: ClientState;
     export let playerList: { playerId; playerName }[];
+    export let isVerboseMode: boolean;
 
     let popCount = 1;
     let sendToPlayerId: string | null = null;
@@ -18,23 +19,25 @@
 </script>
 
 <div class="flex flex-1 flex-col gap-4 border py-5 px-8">
-    <h3>Table Details</h3>
-    <p>ID: {state._tableId}</p>
-    <p>Code: {state._tableCode}</p>
-    <p>Player Count: {state._playerCount}</p>
-    <p>Deck: {state.tableDeck?.length ?? 0} cards</p>
-    <p>Pile: {state.activePile?.length ?? 0} cards</p>
+    {#if isVerboseMode}
+        <h3>Table Details</h3>
+        <p>ID: {state._tableId}</p>
+        <p>Code: {state._tableCode}</p>
+        <p>Player Count: {state._playerCount}</p>
+        <p>Deck: {state.tableDeck?.length ?? 0} cards</p>
+        <p>Pile: {state.activePile?.length ?? 0} cards</p>
 
-    <h6>Player List</h6>
-    <ul>
-        {#each playerList as player}
-            <li class:font-bold={player.playerId === state._playerId}>
-                {player.playerName}{player.playerId === state._playerId
-                    ? " (You)"
-                    : ""} - {player.playerId}
-            </li>
-        {/each}
-    </ul>
+        <h6>Player List</h6>
+        <ul>
+            {#each playerList as player}
+                <li class:font-bold={player.playerId === state._playerId}>
+                    {player.playerName}{player.playerId === state._playerId
+                        ? " (You)"
+                        : ""} - {player.playerId}
+                </li>
+            {/each}
+        </ul>
+    {/if}
 
     <label for="sendToPlayer" />
     <select bind:value={sendToPlayerId}>
