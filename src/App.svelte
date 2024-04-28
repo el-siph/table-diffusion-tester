@@ -6,7 +6,6 @@
         type ClientState,
         type ServerResponse,
     } from "./interfaces";
-    import Viewer from "./Sf-JSON.svelte";
     import VisualDeck from "./VisualDeck.svelte";
 
     let socket: WebSocket;
