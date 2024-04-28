@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import type { ClientState } from "./src/interfaces";
+    import type { ClientState } from "./interfaces";
     export let state: ClientState;
     export let isVerboseMode: boolean;
 
